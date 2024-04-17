@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+#cores
+NC='\033[0m'
+BBlue='\033[1;34m'
+BRed='\033[1;31m'
+
+
+REGEX_ISSUE_ID="[a-zA-Z0-9,\.\_\-]+-[0-9]+"
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+ISSUE_ID=$(echo "$BRANCH_NAME" | grep -o -E "$REGEX_ISSUE_ID")
+COMMIT_MESSAGE=$(cat "$1")
+
+if [ -z "$ISSUE_ID" ]; then
+  echo -e "${BRed}A branch não está no padrão que deveria...${NC}"
+  exit 1
+fi
+
+# prevent adding issue key in commits that have a JIRA issue key
+# i.g. HEY-2: my feature
+if [[ $COMMIT_MESSAGE == $ISSUE_ID* ]]; then
+  exit 0
+fi
+
+echo "$ISSUE_ID: $COMMIT_MESSAGE" >$1
+
