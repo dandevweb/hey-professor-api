@@ -2,6 +2,7 @@
 
 use Laravel\Sanctum\Sanctum;
 
+use App\Rules\WithQuestionMark;
 use function Pest\Laravel\{postJson, assertDatabaseHas};
 
 it('should be able to store a new question', function () {
@@ -42,7 +43,19 @@ describe('validation rules', function () {
         Sanctum::actingAs($user);
 
         postJson(route('questions.store'), [])->assertJsonValidationErrors([
-            'question' => 'required'
+            'question' => __('validation.required', ['attribute' => 'question'])
+        ]);
+    });
+
+    test('question::ending with question mark', function (){
+        $user = \App\Models\User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        postJson(route('questions.store'), [
+            'question' => 'What is the capital of France',
+        ])->assertJsonValidationErrors([
+            'question' => 'The question must end with a question mark.'
         ]);
     });
 

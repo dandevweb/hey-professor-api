@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Quesstion;
 
+use App\Rules\WithQuestionMark;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -17,7 +18,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'question' => ['required'],
+            'question' => ['required', new WithQuestionMark()],
         ];
     }
 }
