@@ -71,5 +71,23 @@ describe('validation rules', function () {
         ]);
     });
 
+    test('question::should be unique', function (){
+        $user = \App\Models\User::factory()->create();
+
+        \App\Models\Question::factory()->create([
+            'question' => 'What is the capital of France?',
+            'user_id' => $user->id,
+            'status' => 'draft'
+        ]);
+
+        Sanctum::actingAs($user);
+
+        postJson(route('questions.store'), [
+            'question' => 'What is the capital of France?',
+        ])->assertJsonValidationErrors([
+            'question' => 'already been taken'
+        ]);
+    });
+
 
 });
