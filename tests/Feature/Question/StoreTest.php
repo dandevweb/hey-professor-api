@@ -34,3 +34,16 @@ test('after creating a new question, I need to make sure that it creates on draf
         'question' => 'What is the capital of France?',
     ]);
 });
+
+describe('validation rules', function () {
+    test('question::required', function () {
+        $user = \App\Models\User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        postJson(route('questions.store'), [])->assertJsonValidationErrors([
+            'question' => 'required'
+        ]);
+    });
+
+});
