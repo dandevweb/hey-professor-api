@@ -11,6 +11,7 @@ return new class () extends Migration {
             $table->id();
             $table->foreignId('user_id')->index();
             $table->text('question');
+            $table->string('status');
             $table->timestamps();
         });
     }
