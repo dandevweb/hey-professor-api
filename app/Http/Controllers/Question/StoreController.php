@@ -10,8 +10,7 @@ class StoreController extends Controller
 {
     public function __invoke(StoreRequest $request)
     {
-        $question = user()
-            ->questions()
+        $question = user()->questions()
             ->create([
                 'question' => $request->question,
                 'status'   => 'draft',
@@ -20,3 +19,4 @@ class StoreController extends Controller
         return QuestionResource::make($question);
     }
 }
+å
