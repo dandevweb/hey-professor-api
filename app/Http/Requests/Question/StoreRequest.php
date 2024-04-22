@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Quesstion;
+namespace App\Http\Requests\Question;
 
 use App\Rules\WithQuestionMark;
 use Illuminate\Foundation\Http\FormRequest;
