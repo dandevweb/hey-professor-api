@@ -19,4 +19,3 @@ class StoreController extends Controller
         return QuestionResource::make($question);
     }
 }
-å
