@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\{RateLimiter, Route};
 
 class RouteServiceProvider extends ServiceProvider
 {
+    public const HOME = '';
+
     public function boot(): void
     {
         RateLimiter::for('api', function (Request $request) {
