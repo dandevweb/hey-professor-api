@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Question;
 
+use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Quesstion\StoreRequest;
@@ -17,15 +18,6 @@ class StoreController extends Controller
             'user_id'  => auth()->user()->id,
         ]);
 
-        return response([
-            'data' => [
-                'id'     => $question->id,
-                'question' => $question->question,
-                'status' => $question->status,
-                'user_id' => $question->user_id,
-                'created_at' => $question->created_at->format('Y-m-d'),
-                'updated_at' => $question->updated_at->format('Y-m-d'),
-            ]
-        ], Response::HTTP_CREATED);
+        return QuestionResource::make($question);
     }
 }
