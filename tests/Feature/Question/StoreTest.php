@@ -1,7 +1,9 @@
 <?php
 
-use Laravel\Sanctum\Sanctum;
+use App\Models\User;
 
+use App\Models\Question;
+use Laravel\Sanctum\Sanctum;
 use App\Rules\WithQuestionMark;
 use function Pest\Laravel\{postJson, assertDatabaseHas};
 
@@ -20,7 +22,7 @@ it('should be able to store a new question', function () {
     ]);
 });
 
-test('after creating a new question, I need to make sure that it creates on draft_status', function () {
+test('with the creation a new question, we need to make sure that it creates with status draft', function () {
     $user = \App\Models\User::factory()->create();
 
     Sanctum::actingAs($user);
@@ -89,5 +91,27 @@ describe('validation rules', function () {
         ]);
     });
 
+});
 
+test('after creating we should return a status 201 with the created question', function (){
+    $user = User::factory()->create();
+
+    Sanctum::actingAs($user);
+
+    $request = postJson(route('questions.store'), [
+        'question' => 'What is the capital of France?',
+    ])->assertCreated();
+
+    $question = Question::latest()->first();
+
+    $request->assertJson([
+        'data' => [
+            'id' => $question->id,
+            'question' => 'What is the capital of France?',
+            'status' => $question->status,
+            'created_at' => $question->created_at->format('Y-m-d'),
+            'updated_at' => $question->updated_at->format('Y-m-d'),
+            'user_id' => $user->id,
+        ]
+    ]);
 });
