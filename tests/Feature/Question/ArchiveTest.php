@@ -4,7 +4,7 @@ use Laravel\Sanctum\Sanctum;
 
 use App\Models\{Question, User};
 
-use function Pest\Laravel\{ assertSoftDeleted,  patchJson, assertNotSoftDeleted};
+use function Pest\Laravel\{ assertSoftDeleted,  patchJson};
 
 it('should be able to archive a question', function () {
     $user     = User::factory()->create();
@@ -42,23 +42,3 @@ it('should make sure that only person who created the question can archive it', 
     patchJson(route('questions.archive', $question->id))
         ->assertNoContent();
 });
-
-// it('should be able to restore an archived question', function () {
-//     $user     = User::factory()->create();
-//     $question = Question::factory()
-//         ->for($user)
-//         ->create([
-//             'deleted_at' => now(),
-//         ]);
-
-//     Sanctum::actingAs($user);
-
-//     patchJson(route('question.restore', $question))
-//         ->assertNoContent();
-
-//     assertNotSoftDeleted('questions', [
-//         'id' => $question->id,
-//     ]);
-
-//     expect($question)->refresh()->deleted_at->toBeNull();
-// });
