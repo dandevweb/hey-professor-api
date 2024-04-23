@@ -12,6 +12,7 @@ return new class () extends Migration {
             $table->foreignId('user_id')->index();
             $table->text('question');
             $table->string('status');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
