@@ -21,21 +21,21 @@ it('should be able to delete a question', function () {
     ]);
 });
 
-// it('should make sure that only person who created the question can delete it', function () {
-//     $rightUser = User::factory()->create();
-//     $wrongUser = User::factory()->create();
+it('should make sure that only person who created the question can delete it', function () {
+    $rightUser = User::factory()->create();
+    $wrongUser = User::factory()->create();
 
-//     $question = Question::factory()->create([
-//         'user_id' => $rightUser->id,
-//     ]);
+    $question = Question::factory()->create([
+        'user_id' => $rightUser->id,
+    ]);
 
-//     Sanctum::actingAs($wrongUser);
+    Sanctum::actingAs($wrongUser);
 
-//     delete(route('question.delete', $question->id))
-//         ->assertForbidden();
+    deleteJson(route('questions.delete', $question->id))
+        ->assertForbidden();
 
-//     actingAs($rightUser);
+    Sanctum::actingAs($rightUser);
 
-//     delete(route('question.delete', $question->id))
-//         ->assertNoContent();
-// });
+    deleteJson(route('questions.delete', $question->id))
+        ->assertNoContent();
+});
