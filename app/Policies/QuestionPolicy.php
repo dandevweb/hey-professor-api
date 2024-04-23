@@ -2,8 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Question;
+use App\Models\{Question, User};
 
 class QuestionPolicy
 {
@@ -13,6 +12,11 @@ class QuestionPolicy
     }
 
     public function archive(User $user, Question $question): bool
+    {
+        return $question->user->is($user);
+    }
+
+    public function restore(User $user, Question $question): bool
     {
         return $question->user->is($user);
     }
