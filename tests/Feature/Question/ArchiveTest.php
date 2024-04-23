@@ -23,25 +23,24 @@ it('should be able to archive a question', function () {
     expect($question)->refresh()->deleted_at->not->toBeNull();
 });
 
-// it('should make sure that only person who created the question can archive it', function () {
-//     $rightUser = User::factory()->create();
-//     $wrongUser = User::factory()->create();
+it('should make sure that only person who created the question can archive it', function () {
+    $rightUser = User::factory()->create();
+    $wrongUser = User::factory()->create();
 
-//     $question = Question::factory()->create([
-//         'draft'      => true,
-//         'created_by' => $rightUser->id,
-//     ]);
+    $question = Question::factory()->create([
+        'user_id' => $rightUser->id,
+    ]);
 
-//     Sanctum::actingAs($wrongUser);
+    Sanctum::actingAs($wrongUser);
 
-//     patchJson(route('questions.archive', $question->id))
-//         ->assertForbidden();
+    patchJson(route('questions.archive', $question->id))
+        ->assertForbidden();
 
-//     Sanctum::actingAs($rightUser);
+    Sanctum::actingAs($rightUser);
 
-//     patchJson(route('questions.archive', $question->id))
-//         ->assertRedirect();
-// });
+    patchJson(route('questions.archive', $question->id))
+        ->assertNoContent();
+});
 
 // it('should be able  to restore an archived question', function () {
 //     $user     = User::factory()->create();
