@@ -10,9 +10,10 @@ Route::get('users', function () {
 });
 
 // region Auth
-Route::post('register', Auth\RegisterController::class)->name('register');
-Route::post('login', Auth\LoginController::class)->name('login');
-
+Route::middleware(['guest', 'web'])->group(function () {
+    Route::post('login', Auth\LoginController::class)->name('login');
+    Route::post('register', Auth\RegisterController::class)->name('register');
+});
 // region Auth
 
 // region Authenticated
