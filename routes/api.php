@@ -5,21 +5,21 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('users', function () {
     return User::all();
 });
 
 // region Auth
 Route::post('register', Auth\RegisterController::class)->name('register');
+Route::post('login', Auth\LoginController::class)->name('login');
 
 // region Auth
 
 // region Authenticated
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 
     // region Question
     Route::post('questions', Question\StoreController::class)->name('questions.store');
