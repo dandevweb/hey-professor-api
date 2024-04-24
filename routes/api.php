@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{Auth, Question};
+use App\Http\Controllers\{Question};
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -9,12 +9,6 @@ Route::get('users', function () {
     return User::all();
 });
 
-// region Auth
-Route::middleware(['guest', 'web'])->group(function () {
-    Route::post('login', Auth\LoginController::class)->name('login');
-    Route::post('register', Auth\RegisterController::class)->name('register');
-});
-// region Auth
 
 // region Authenticated
 Route::middleware('auth:sanctum')->group(function () {
